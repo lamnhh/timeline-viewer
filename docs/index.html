@@ -22,6 +22,16 @@
         </h4>
 
         <article class="center mw5 mw6-ns br3 ba b--black-10 mv4">
+            <h3 class="f4 bg-near-white br3 br--top black-60 mv0 pv2 ph3">Choose local file</h3>
+            <div class="pa3 bt b--black-10 f6 f5-ns lh-copy">
+                <form id="manualFileSelector">
+                    <input type="file" name="file" accept=".json">
+                    <input type="submit" class="btn btn--s btn--gray" value="OK">
+                </form>
+            </div>
+        </article>
+
+        <article class="center mw5 mw6-ns br3 ba b--black-10 mv4">
             <h3 class="f4 bg-near-white br3 br--top black-60 mv0 pv2 ph3">View public traces</h3>
             <div class="pa3 bt b--black-10 f6 f5-ns lh-copy">
                 <form>
@@ -122,6 +132,28 @@
           .catch(error => {
             console.error('Error during service worker registration:', error);
           });
+
+        // Add handlers for manual file selector
+        document.getElementById('manualFileSelector').onsubmit = (e) => {
+          e.preventDefault();
+          const form = e.target;
+          const files = form.file.files;
+          if (files.length === 0) {
+            return;
+          }
+
+          const file = files[0];
+          console.log({
+            files,
+          });
+          Timeline.TimelinePanel.instance()._loadFromFile(file);
+
+          // copied from timeline_viewer.js
+          viewer.makeDevToolsVisible(true);
+          UI.inspectorView.showPanel('timeline').then(_ => {
+            viewer.toggleUploadToDriveElem(viewer.canUploadToDrive);
+          });
+        };
       });
     </script>
 
