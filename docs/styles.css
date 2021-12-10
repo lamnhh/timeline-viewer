@@ -161,5 +161,8 @@ html.hide-devtools {
 .about ul { text-align: left; }
 .about ul code { font-size: 80%; }
 
+.-theme-with-dark-background * {
+  color: white;
+}
 
 /* edits on the devtools UI happen in tweakUI() in dev_tools.js */
